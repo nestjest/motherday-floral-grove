@@ -93,44 +93,135 @@ a {
 }
 
 /* =========================================================
-   MINIMAL CENTERED WHITE SERIF DEDICATION STRIP + PROGRESS LINE
+   MORPHING DEDICATION HEADER -> FLOATING GLASS PILL "Max&Jane"
    ========================================================= */
 .dedication-bar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: var(--banner-height);
-  z-index: 90;
-  background: rgba(255, 255, 255, 0.93);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(30, 51, 38, 0.08);
+  z-index: 95;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 0 1.25rem;
-  transition: box-shadow 0.35s var(--ease-editorial);
+  pointer-events: none;
+  padding: 0;
+  transition: padding-top 0.55s var(--ease-editorial);
 }
 
-.dedication-bar.is-scrolled {
-  box-shadow: 0 8px 28px rgba(30, 40, 34, 0.055);
+.dedication-bar.is-pill {
+  padding-top: 14px;
+}
+
+.dedication-surface {
+  pointer-events: auto;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: var(--banner-height);
+  padding: 0 1.4rem;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid transparent;
+  border-bottom-color: rgba(30, 51, 38, 0.08);
+  box-shadow: 0 2px 12px rgba(30, 40, 34, 0.03);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition:
+    width 0.6s var(--ease-editorial),
+    max-width 0.6s var(--ease-editorial),
+    height 0.55s var(--ease-editorial),
+    padding 0.55s var(--ease-editorial),
+    border-radius 0.55s var(--ease-editorial),
+    background-color 0.55s var(--ease-editorial),
+    border-color 0.55s var(--ease-editorial),
+    box-shadow 0.55s var(--ease-editorial),
+    transform 0.35s var(--ease-editorial);
+}
+
+.dedication-bar.is-pill .dedication-surface {
+  width: auto;
+  max-width: 210px;
+  height: 44px;
+  padding: 0 1.35rem;
+  border-radius: 999px;
+  background: rgba(255, 253, 250, 0.66);
+  backdrop-filter: blur(22px) saturate(165%);
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
+  border-color: rgba(255, 255, 255, 0.88);
+  box-shadow:
+    0 14px 36px rgba(32, 42, 36, 0.11),
+    0 2px 8px rgba(176, 122, 138, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.dedication-bar.is-pill .dedication-surface:hover {
+  background: rgba(255, 253, 250, 0.84);
+  transform: translateY(-1px);
 }
 
 .dedication-text {
   font-family: var(--font-serif);
-  font-size: clamp(1.18rem, 2.2vw, 1.56rem);
+  font-size: clamp(1.16rem, 2.1vw, 1.52rem);
   font-weight: 500;
   letter-spacing: 0.04em;
   color: var(--botanical);
-  text-align: center;
   margin: 0;
-  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  line-height: 1;
 }
 
-.dedication-text em {
+.dedication-prefix {
+  display: inline-block;
+  max-width: 420px;
+  opacity: 1;
+  overflow: hidden;
+  transform: translateX(0);
+  transition:
+    max-width 0.55s var(--ease-editorial),
+    opacity 0.32s ease,
+    margin-right 0.55s var(--ease-editorial),
+    transform 0.5s var(--ease-editorial);
+  margin-right: 0.28em;
+}
+
+.dedication-bar.is-pill .dedication-prefix {
+  max-width: 0;
+  opacity: 0;
+  margin-right: 0;
+  transform: translateX(-8px);
+}
+
+.dedication-brand {
   font-style: italic;
   color: var(--peony-deep);
+  transition: color 0.35s ease, font-size 0.45s var(--ease-editorial);
+}
+
+.dedication-bar.is-pill .dedication-brand {
+  font-size: 1.24rem;
+  color: var(--botanical);
+}
+
+.pill-dot {
+  width: 0;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--peony);
+  opacity: 0;
+  margin-right: 0;
+  transition: width 0.45s var(--ease-editorial), opacity 0.45s ease, margin-right 0.45s var(--ease-editorial);
+}
+
+.dedication-bar.is-pill .pill-dot {
+  width: 6px;
+  opacity: 1;
+  margin-right: 0.55rem;
 }
 
 .page-scroll-progress {
@@ -143,6 +234,111 @@ a {
   transform-origin: left;
   transform: scaleX(var(--scroll-page));
   will-change: transform;
+}
+
+/* Minimal Chapter Indicator Dots (Right Edge, Desktop) */
+.scene-rail-dots {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 86;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 7px;
+  border-radius: 999px;
+  background: rgba(255, 253, 250, 0.56);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 28px rgba(30, 40, 34, 0.08);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s var(--ease-editorial);
+}
+
+.scene-rail-dots.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scene-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(30, 51, 38, 0.24);
+  padding: 0;
+  transition: transform 0.35s var(--ease-editorial), background-color 0.35s ease, height 0.35s var(--ease-editorial);
+}
+
+.scene-dot:hover {
+  background: var(--peony);
+  transform: scale(1.25);
+}
+
+.scene-dot.is-active {
+  background: var(--peony-deep);
+  height: 22px;
+  border-radius: 999px;
+}
+
+/* =========================================================
+   CINEMATIC STICKY-DECK SCENE TRANSITIONS (LAYERED CURTAINS)
+   ========================================================= */
+.story-deck {
+  position: relative;
+}
+
+.story-scene {
+  position: sticky;
+  top: var(--scene-sticky-top, 0px);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top-left-radius: calc((1 - var(--scene-enter, 1)) * 42px);
+  border-top-right-radius: calc((1 - var(--scene-enter, 1)) * 42px);
+  box-shadow: 0 -22px 68px rgba(32, 40, 36, 0.11);
+  transform-origin: center top;
+  will-change: transform, opacity, filter, border-radius;
+}
+
+.story-scene-inner {
+  width: 100%;
+  transform:
+    scale(calc(1 - var(--scene-exit, 0) * 0.075))
+    translateY(calc(var(--scene-exit, 0) * -26px + (1 - var(--scene-enter, 1)) * 22px));
+  opacity: calc(1 - var(--scene-exit, 0) * 0.58);
+  filter: blur(calc(var(--scene-exit, 0) * 3.5px));
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+}
+
+/* Ascending curtain stacking order so each chapter glides smoothly over the previous one */
+.story-scene[data-scene-idx='1'] {
+  z-index: 12;
+  box-shadow: none;
+}
+.story-scene[data-scene-idx='2'] {
+  z-index: 14;
+}
+.story-scene[data-scene-idx='3'] {
+  z-index: 16;
+}
+.story-scene[data-scene-idx='4'] {
+  z-index: 18;
+}
+.story-scene[data-scene-idx='5'] {
+  z-index: 20;
+}
+.story-scene[data-scene-idx='6'] {
+  z-index: 22;
+}
+.story-scene[data-scene-idx='7'] {
+  z-index: 24;
+  position: relative;
+  top: auto;
 }
 
 /* =========================================================
@@ -342,19 +538,16 @@ a {
 }
 
 /* =========================================================
-   CLOUD 3D FLOWER STAGE
+   SCENE 1: CLOUD 3D FLOWER STAGE
    ========================================================= */
 .cloud-stage-section {
-  position: relative;
-  z-index: 12;
   margin-top: -36vh;
-  padding: clamp(4.5rem, 6.5vw, 5.5rem) 0 clamp(4rem, 6.5vw, 5.5rem);
+  padding: clamp(4.2rem, 6vw, 5.2rem) 0 clamp(3.5rem, 5.5vw, 4.8rem);
   background:
     radial-gradient(ellipse 95% 36% at 50% 0%, rgba(255, 254, 252, 0.96) 0%, rgba(255, 254, 252, 0) 72%),
-    linear-gradient(180deg, rgba(223, 235, 247, 0.94) 0%, var(--sky-mid) 52%, var(--sky-blush) 84%, var(--ivory) 100%);
+    linear-gradient(180deg, rgba(223, 235, 247, 0.96) 0%, var(--sky-mid) 52%, var(--sky-blush) 86%, var(--ivory) 100%);
   overflow: hidden;
   opacity: var(--cloud-fade);
-  will-change: opacity;
 }
 
 .section-container {
@@ -366,7 +559,7 @@ a {
 .section-header {
   text-align: center;
   max-width: 760px;
-  margin: 0 auto clamp(2rem, 4vw, 3rem);
+  margin: 0 auto clamp(1.75rem, 3.2vw, 2.5rem);
 }
 
 .section-eyebrow {
@@ -376,17 +569,17 @@ a {
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--sage);
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.75rem;
 }
 
 .section-title {
   font-family: var(--font-serif);
-  font-size: clamp(2.35rem, 5vw, 4.15rem);
+  font-size: clamp(2.3rem, 4.7vw, 4rem);
   font-weight: 400;
   line-height: 1.04;
   letter-spacing: -0.01em;
   color: var(--botanical);
-  margin: 0 0 0.9rem;
+  margin: 0 0 0.85rem;
 }
 
 .section-title em {
@@ -395,7 +588,7 @@ a {
 }
 
 .section-lead {
-  font-size: clamp(0.95rem, 1.25vw, 1.06rem);
+  font-size: clamp(0.94rem, 1.2vw, 1.05rem);
   color: var(--ink-soft);
   margin: 0;
 }
@@ -406,12 +599,12 @@ a {
   grid-template-columns: minmax(260px, 335px) minmax(0, 1fr) minmax(260px, 335px);
   gap: clamp(1.2rem, 2.4vw, 2.1rem);
   align-items: center;
-  min-height: 580px;
+  min-height: 540px;
 }
 
 .cloud-canvas-shell {
   position: relative;
-  height: clamp(440px, 64vh, 620px);
+  height: clamp(430px, 60vh, 590px);
   border-radius: 36px;
   cursor: grab;
   touch-action: pan-y;
@@ -465,7 +658,7 @@ a {
   }
 }
 
-/* Frosted Glass Panels + Subtle 3D Tilt Specular Glow */
+/* Frosted Glass Panels + Specular Cursor Glow */
 .glass-panel {
   position: relative;
   overflow: hidden;
@@ -474,7 +667,7 @@ a {
   -webkit-backdrop-filter: blur(20px) saturate(140%);
   border: 1px solid var(--glass-border);
   border-radius: 26px;
-  padding: clamp(1.45rem, 2.3vw, 1.95rem);
+  padding: clamp(1.4rem, 2.2vw, 1.9rem);
   box-shadow: var(--glass-shadow);
   transition: transform 0.42s var(--ease-editorial), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.35s ease;
 }
@@ -500,7 +693,7 @@ a {
 .stage-wish-panel {
   display: flex;
   flex-direction: column;
-  gap: 0.95rem;
+  gap: 0.9rem;
   cursor: pointer;
   text-align: left;
 }
@@ -536,7 +729,7 @@ a {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--peony-deep);
-  padding-bottom: 0.75rem;
+  padding-bottom: 0.7rem;
   border-bottom: 1px solid var(--hairline);
 }
 
@@ -556,7 +749,7 @@ a {
 
 .stage-panel-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.62rem, 2.25vw, 2.02rem);
+  font-size: clamp(1.58rem, 2.2vw, 1.98rem);
   font-weight: 500;
   line-height: 1.12;
   color: var(--botanical);
@@ -564,8 +757,8 @@ a {
 }
 
 .stage-panel-body {
-  font-size: 0.94rem;
-  line-height: 1.64;
+  font-size: 0.93rem;
+  line-height: 1.62;
   color: var(--ink-soft);
   margin: 0;
 }
@@ -573,25 +766,34 @@ a {
 .stage-panel-sign {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.08rem;
+  font-size: 1.06rem;
   color: var(--rose-dust);
-  padding-top: 0.85rem;
+  padding-top: 0.8rem;
   border-top: 1px solid var(--hairline);
 }
 
 /* =========================================================
-   DUAL KINETIC EDITORIAL MARQUEE RIBBONS
+   SCENE 2: KINETIC RIBBONS + 3D WAX-SEAL ENVELOPE LETTER
    ========================================================= */
-.kinetic-marquee-section {
+.envelope-scene {
+  padding: 0 0 clamp(4rem, 6vw, 5.5rem);
+  background:
+    radial-gradient(circle at 22% 40%, rgba(242, 207, 217, 0.45) 0%, rgba(242, 207, 217, 0) 48%),
+    radial-gradient(circle at 80% 78%, rgba(220, 234, 248, 0.48) 0%, rgba(220, 234, 248, 0) 46%),
+    linear-gradient(180deg, #faf4ee 0%, var(--ivory) 100%);
+  overflow: hidden;
+}
+
+.kinetic-marquee-band {
   position: relative;
-  padding: clamp(2.2rem, 4vw, 3.4rem) 0;
-  background: linear-gradient(180deg, var(--ivory) 0%, #f8f0ec 50%, var(--ivory) 100%);
-  border-top: 1px solid rgba(30, 51, 38, 0.07);
+  padding: clamp(1.6rem, 3vw, 2.4rem) 0;
+  margin-bottom: clamp(2.2rem, 4vw, 3.2rem);
+  background: rgba(255, 251, 248, 0.6);
   border-bottom: 1px solid rgba(30, 51, 38, 0.07);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.7rem;
 }
 
 .marquee-row {
@@ -618,7 +820,7 @@ a {
 .marquee-phrase-serif {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(1.75rem, 3.2vw, 2.7rem);
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
   font-weight: 400;
   color: var(--botanical);
   white-space: nowrap;
@@ -626,7 +828,7 @@ a {
 
 .marquee-phrase-sans {
   font-family: var(--font-sans);
-  font-size: clamp(0.84rem, 1.15vw, 0.96rem);
+  font-size: clamp(0.82rem, 1.1vw, 0.94rem);
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -661,44 +863,31 @@ a {
   }
 }
 
-/* =========================================================
-   INTERACTIVE 3D WAX-SEAL ENVELOPE LETTER SECTION
-   ========================================================= */
-.envelope-section {
-  position: relative;
-  padding: clamp(5rem, 8.5vw, 7.2rem) 0;
-  background:
-    radial-gradient(circle at 22% 30%, rgba(242, 207, 217, 0.42) 0%, rgba(242, 207, 217, 0) 48%),
-    radial-gradient(circle at 80% 72%, rgba(220, 234, 248, 0.45) 0%, rgba(220, 234, 248, 0) 46%),
-    var(--ivory);
-  overflow: hidden;
-}
-
 .envelope-stage {
   max-width: 760px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.4rem;
 }
 
 .wax-envelope-wrap {
   position: relative;
   width: min(100%, 620px);
-  padding-top: 2rem;
+  padding-top: 1.5rem;
   perspective: 1400px;
   transition: padding-top 0.7s var(--ease-editorial);
 }
 
 .wax-envelope-wrap:has(.envelope-shell.is-open) {
-  padding-top: 9.5rem;
+  padding-top: 9.2rem;
 }
 
 .envelope-shell {
   position: relative;
   width: 100%;
-  min-height: 330px;
+  min-height: 315px;
   border-radius: 26px;
   background: linear-gradient(160deg, #f8efe6 0%, #f1e3d8 100%);
   border: 1px solid rgba(169, 93, 116, 0.2);
@@ -708,7 +897,7 @@ a {
 }
 
 .envelope-shell.is-open {
-  min-height: 540px;
+  min-height: 520px;
   box-shadow: 0 34px 78px rgba(169, 93, 116, 0.16);
 }
 
@@ -717,7 +906,7 @@ a {
   top: 0;
   left: 0;
   right: 0;
-  height: 175px;
+  height: 170px;
   background: linear-gradient(180deg, #fbf4ee 0%, #efe0d5 100%);
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   border-top-left-radius: 26px;
@@ -747,12 +936,12 @@ a {
 
 .wax-seal-btn {
   position: absolute;
-  top: 132px;
+  top: 126px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 9;
-  width: 92px;
-  height: 92px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #e49bb0 0%, #ba6a82 58%, #94485e 100%);
   color: var(--white);
@@ -777,7 +966,7 @@ a {
 }
 
 .wax-seal-heart {
-  font-size: 1.55rem;
+  font-size: 1.5rem;
   line-height: 1;
 }
 
@@ -798,12 +987,12 @@ a {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 2.1rem;
+  bottom: 2rem;
   z-index: 5;
   text-align: center;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.48rem;
+  font-size: 1.46rem;
   color: var(--botanical);
   transition: opacity 0.35s ease;
   pointer-events: none;
@@ -813,12 +1002,11 @@ a {
   opacity: 0;
 }
 
-/* Rising Silk Letter Paper inside Envelope */
 .envelope-letter-sheet {
   position: relative;
   z-index: 5;
   margin: 0 clamp(1rem, 3vw, 2rem);
-  padding: clamp(1.8rem, 3.6vw, 2.8rem);
+  padding: clamp(1.7rem, 3.4vw, 2.6rem);
   border-radius: 22px;
   background: linear-gradient(180deg, #fffefb 0%, #fbf6f0 100%);
   border: 1px solid rgba(169, 93, 116, 0.18);
@@ -831,25 +1019,25 @@ a {
 
 .envelope-shell.is-open .envelope-letter-sheet {
   opacity: 1;
-  transform: translateY(-22px) scale(1);
+  transform: translateY(-20px) scale(1);
   pointer-events: auto;
 }
 
 .letter-salutation {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(1.7rem, 2.8vw, 2.2rem);
+  font-size: clamp(1.65rem, 2.6vw, 2.15rem);
   color: var(--peony-deep);
-  margin: 0 0 1rem;
+  margin: 0 0 0.9rem;
 }
 
 .letter-body {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
-  font-size: 0.97rem;
+  gap: 0.85rem;
+  font-size: 0.96rem;
   color: var(--ink-soft);
-  margin-bottom: 1.35rem;
+  margin-bottom: 1.25rem;
 }
 
 .letter-body p {
@@ -869,33 +1057,32 @@ a {
 .letter-closing {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 1.28rem;
+  font-size: 1.26rem;
   color: var(--botanical);
 }
 
 /* =========================================================
-   INTERACTIVE 8-PETAL BLOOM ORACLE («СОРВИ ЛЕПЕСТОК ПОЖЕЛАНИЙ»)
+   SCENE 4: INTERACTIVE 8-PETAL BLOOM ORACLE
    ========================================================= */
 .oracle-section {
-  position: relative;
-  padding: clamp(5rem, 8.5vw, 7.2rem) 0;
+  padding: clamp(4.5rem, 7.5vw, 6.2rem) 0;
   background:
-    radial-gradient(circle at 78% 28%, rgba(242, 207, 217, 0.46) 0%, rgba(242, 207, 217, 0) 48%),
-    radial-gradient(circle at 18% 78%, rgba(212, 230, 246, 0.46) 0%, rgba(212, 230, 246, 0) 48%),
-    linear-gradient(180deg, var(--ivory) 0%, #f9f2ee 50%, var(--ivory) 100%);
+    radial-gradient(circle at 78% 28%, rgba(242, 207, 217, 0.48) 0%, rgba(242, 207, 217, 0) 48%),
+    radial-gradient(circle at 18% 78%, rgba(212, 230, 246, 0.48) 0%, rgba(212, 230, 246, 0) 48%),
+    linear-gradient(180deg, #faf3ef 0%, #f8eef0 50%, var(--ivory) 100%);
   overflow: hidden;
 }
 
 .oracle-layout {
   display: grid;
-  grid-template-columns: minmax(280px, 460px) minmax(0, 1fr);
-  gap: clamp(2rem, 4.5vw, 4.2rem);
+  grid-template-columns: minmax(280px, 440px) minmax(0, 1fr);
+  gap: clamp(2rem, 4.5vw, 4rem);
   align-items: center;
 }
 
 .bloom-wheel-stage {
   position: relative;
-  width: min(100%, 420px);
+  width: min(100%, 400px);
   aspect-ratio: 1;
   margin: 0 auto;
   display: flex;
@@ -927,10 +1114,10 @@ a {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 98px;
-  height: 158px;
-  margin-left: -49px;
-  margin-top: -158px;
+  width: 96px;
+  height: 154px;
+  margin-left: -48px;
+  margin-top: -154px;
   transform-origin: 50% 100%;
   transform: rotate(var(--petal-angle)) translateY(-18px);
   border-radius: 50% 50% 42% 42% / 62% 62% 38% 38%;
@@ -942,7 +1129,7 @@ a {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 26px;
+  padding-top: 24px;
   transition: transform 0.55s var(--ease-editorial), opacity 0.5s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
@@ -961,7 +1148,7 @@ a {
 
 .oracle-petal-text {
   font-family: var(--font-serif);
-  font-size: 1.02rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--botanical);
   transform: rotate(calc(var(--petal-angle) * -1));
@@ -971,8 +1158,8 @@ a {
 .bloom-center-core {
   position: relative;
   z-index: 6;
-  width: 96px;
-  height: 96px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
   background: radial-gradient(circle at 38% 35%, #fff5d8 0%, #f2cb79 58%, #d79c44 100%);
   box-shadow:
@@ -984,7 +1171,7 @@ a {
   justify-content: center;
   color: #4f3410;
   font-family: var(--font-serif);
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   font-weight: 600;
   text-align: center;
   line-height: 1.1;
@@ -998,11 +1185,7 @@ a {
 .oracle-card {
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
-}
-
-.oracle-card.is-revealing {
-  animation: wishPop 0.55s var(--ease-editorial);
+  gap: 1.1rem;
 }
 
 .oracle-history-chips {
@@ -1030,7 +1213,7 @@ a {
   align-items: flex-end;
   justify-content: space-between;
   gap: 1.25rem;
-  margin-bottom: clamp(1.6rem, 3vw, 2.4rem);
+  margin-bottom: clamp(1.4rem, 2.6vw, 2.1rem);
 }
 
 .rail-topbar .section-header {
@@ -1087,7 +1270,7 @@ a {
   gap: clamp(1.1rem, 2.1vw, 1.75rem);
   overflow-x: auto;
   overflow-y: visible;
-  padding: 0.65rem clamp(1.25rem, 3.5vw, 3rem) 1.6rem;
+  padding: 0.65rem clamp(1.25rem, 3.5vw, 3rem) 1.4rem;
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   cursor: grab;
@@ -1139,17 +1322,16 @@ a {
 }
 
 /* =========================================================
-   HORIZONTAL 10 FLIPPABLE GREETING CARDS FOR MOM
+   SCENE 3: HORIZONTAL 10 FLIPPABLE GREETING CARDS
    ========================================================= */
 .greetings-section {
-  padding: clamp(4.5rem, 8vw, 6.8rem) 0;
-  background: var(--ivory);
-  position: relative;
+  padding: clamp(4.2rem, 7vw, 6rem) 0;
+  background: linear-gradient(180deg, #fdfaf6 0%, var(--ivory) 100%);
 }
 
 .flip-card-slot {
   flex: 0 0 clamp(290px, 28vw, 360px);
-  min-height: 375px;
+  min-height: 365px;
   perspective: 1200px;
   scroll-snap-align: start;
 }
@@ -1158,7 +1340,7 @@ a {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 375px;
+  min-height: 365px;
   padding: 0;
   text-align: left;
   transform-style: preserve-3d;
@@ -1175,13 +1357,13 @@ a {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   border-radius: 26px;
-  padding: clamp(1.55rem, 2.4vw, 2.1rem);
+  padding: clamp(1.5rem, 2.3vw, 2rem);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.95rem;
   border: 1px solid var(--hairline);
-  transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+  transition: box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
 .flip-face--front {
@@ -1224,7 +1406,7 @@ a {
 
 .greeting-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.52rem, 2.1vw, 1.88rem);
+  font-size: clamp(1.5rem, 2.05vw, 1.85rem);
   font-weight: 500;
   line-height: 1.15;
   color: var(--botanical);
@@ -1232,7 +1414,7 @@ a {
 }
 
 .greeting-text {
-  font-size: 0.94rem;
+  font-size: 0.93rem;
   color: var(--ink-soft);
   margin: 0;
   flex: 1;
@@ -1244,7 +1426,7 @@ a {
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--peony-deep);
-  padding-top: 0.9rem;
+  padding-top: 0.85rem;
   border-top: 1px solid var(--hairline);
   display: flex;
   align-items: center;
@@ -1254,22 +1436,21 @@ a {
 .secret-wish-quote {
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(1.38rem, 2vw, 1.68rem);
+  font-size: clamp(1.36rem, 1.95vw, 1.66rem);
   line-height: 1.32;
   color: var(--botanical);
   margin: 0;
 }
 
 /* =========================================================
-   HORIZONTAL COLLECTIBLE GLASS WISHES STRIP
+   SCENE 5: COLLECTIBLE GLASS WISHES STRIP
    ========================================================= */
 .glass-band-section {
-  position: relative;
-  padding: clamp(4.5rem, 8vw, 6.8rem) 0;
+  padding: clamp(4.2rem, 7vw, 6rem) 0;
   background:
     radial-gradient(circle at 14% 25%, rgba(242, 207, 217, 0.5) 0%, rgba(242, 207, 217, 0) 48%),
     radial-gradient(circle at 86% 78%, rgba(212, 230, 246, 0.58) 0%, rgba(212, 230, 246, 0) 52%),
-    linear-gradient(180deg, var(--ivory) 0%, #f7f1ec 50%, var(--ivory) 100%);
+    linear-gradient(180deg, #f8f2ec 0%, #f5ece9 50%, var(--ivory) 100%);
 }
 
 .glass-wish-card {
@@ -1368,11 +1549,11 @@ a {
 }
 
 /* =========================================================
-   HORIZONTAL 6-PLATE EDITORIAL GALLERY RAIL
+   SCENE 6: HORIZONTAL 6-PLATE EDITORIAL GALLERY
    ========================================================= */
 .gallery-section {
-  padding: clamp(4.5rem, 8vw, 7rem) 0;
-  background: var(--ivory);
+  padding: clamp(4.2rem, 7vw, 6rem) 0;
+  background: linear-gradient(180deg, #fcf8f3 0%, var(--ivory) 100%);
 }
 
 .gallery-rail {
@@ -1380,17 +1561,17 @@ a {
 }
 
 .gallery-plate {
-  flex: 0 0 clamp(290px, 31vw, 410px);
+  flex: 0 0 clamp(270px, 27vw, 370px);
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 0.8rem;
   text-align: left;
   padding: 0;
 }
 
 .gallery-plate--wide {
-  flex: 0 0 clamp(320px, 43vw, 560px);
+  flex: 0 0 clamp(300px, 39vw, 510px);
 }
 
 .gallery-image-frame {
@@ -1453,7 +1634,7 @@ a {
 .gallery-meta {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.3rem;
   padding: 0 0.25rem;
 }
 
@@ -1467,7 +1648,7 @@ a {
 
 .gallery-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 2.2vw, 1.95rem);
+  font-size: clamp(1.45rem, 2.1vw, 1.88rem);
   font-weight: 500;
   line-height: 1.12;
   color: var(--botanical);
@@ -1475,16 +1656,15 @@ a {
 }
 
 .gallery-caption {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--ink-soft);
   margin: 0;
 }
 
 /* =========================================================
-   HORSESHOE FLORAL ARCH FOOTER + MOTHER'S DAY CTA
+   SCENE 7: HORSESHOE FLORAL ARCH FOOTER & CTA
    ========================================================= */
 .horseshoe-footer {
-  position: relative;
   background: var(--ivory);
   padding: clamp(2.5rem, 5vw, 4.5rem) 0 0;
   overflow: hidden;
@@ -1494,11 +1674,11 @@ a {
   position: relative;
   max-width: 1360px;
   margin: 0 auto;
-  min-height: clamp(520px, 68vw, 780px);
+  min-height: clamp(520px, 68vw, 760px);
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: clamp(6rem, 15vw, 12.5rem) clamp(1.25rem, 4vw, 3rem) clamp(3.5rem, 6vw, 5.5rem);
+  padding: clamp(6rem, 15vw, 12rem) clamp(1.25rem, 4vw, 3rem) clamp(3.5rem, 6vw, 5.5rem);
 }
 
 .horseshoe-arch-backdrop {
@@ -1617,9 +1797,7 @@ a {
   color: var(--botanical);
 }
 
-/* =========================================================
-   FLOATING PETAL SHOWER BUTTON (PLAYFUL ANYTIME INTERACTION)
-   ========================================================= */
+/* Floating Anytime Petal Shower Button */
 .floating-petal-fab {
   position: fixed;
   right: clamp(1rem, 2.2vw, 1.75rem);
@@ -1872,12 +2050,12 @@ a {
 /* Rich Blur-to-Crisp Scroll Reveal */
 .reveal-up {
   opacity: 0;
-  transform: translateY(30px) scale(0.985);
+  transform: translateY(28px) scale(0.985);
   filter: blur(4px);
   transition:
-    opacity 0.8s var(--ease-editorial),
-    transform 0.85s var(--ease-editorial),
-    filter 0.8s var(--ease-editorial);
+    opacity 0.78s var(--ease-editorial),
+    transform 0.82s var(--ease-editorial),
+    filter 0.78s var(--ease-editorial);
 }
 
 .reveal-up.is-inview {
@@ -1890,6 +2068,10 @@ a {
    RESPONSIVE BREAKPOINTS
    ========================================================= */
 @media (max-width: 1080px) {
+  .scene-rail-dots {
+    display: none;
+  }
+
   .cloud-stage-grid {
     grid-template-columns: 1fr;
     gap: 1.15rem;
@@ -1897,7 +2079,7 @@ a {
 
   .cloud-canvas-shell {
     order: -1;
-    height: clamp(380px, 54vh, 500px);
+    height: clamp(380px, 52vh, 480px);
   }
 
   .oracle-layout {
@@ -2014,6 +2196,19 @@ a {
   .hero-sticky-viewport {
     position: relative;
     height: 88vh;
+  }
+
+  .story-scene {
+    position: relative !important;
+    top: auto !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .story-scene-inner {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
   }
 
   .hero-media-layer {

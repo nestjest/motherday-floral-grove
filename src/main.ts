@@ -14,6 +14,17 @@ import { CloudFlowerStage } from './scene/CloudFlowerStage';
 import { HeroPetalsOverlay } from './scene/HeroPetalsOverlay';
 import { PetalCelebrationOverlay, exportMothersDayCardPNG } from './components/CelebrationCanvas';
 
+const SCENE_CHAPTERS = [
+  { id: 'hero-track', label: 'Цветочная роща' },
+  { id: 'cloud-stage', label: '3D-пион в облаках' },
+  { id: 'wax-envelope', label: 'Письмо в конверте' },
+  { id: 'greetings', label: 'Десять открыток' },
+  { id: 'petal-oracle', label: 'Цветок желаний' },
+  { id: 'glass-wishes', label: 'Букет пожеланий' },
+  { id: 'gallery', label: 'Галерея рощи' },
+  { id: 'celebrate', label: 'Главное поздравление' },
+];
+
 function renderMarqueeItems(phrases: string[], cls: string): string {
   const chunk = phrases
     .map((text) => `<span class="${cls}">${text}</span><span class="marquee-dot" aria-hidden="true"></span>`)
@@ -119,15 +130,38 @@ function renderAppMarkup(): string {
     `
   ).join('');
 
+  const sceneDotsHtml = SCENE_CHAPTERS.map(
+    (ch, idx) => `
+      <button
+        type="button"
+        class="scene-dot ${idx === 0 ? 'is-active' : ''}"
+        data-scene-target="${ch.id}"
+        aria-label="Перейти к сцене: ${ch.label}"
+        title="${ch.label}"
+      ></button>
+    `
+  ).join('');
+
   return `
-    <!-- Minimal Centered White Serif Dedication Bar + Live Scroll Progress Ribbon -->
+    <!-- Morphing White Serif Header -> Compact Floating Frosted Glass Pill "Max&Jane" -->
     <header class="dedication-bar" id="dedication-bar">
-      <p class="dedication-text">Мама, поздравляю тебя от <em>Max&amp;Jane</em></p>
-      <div class="page-scroll-progress" aria-hidden="true"></div>
+      <a href="#top" class="dedication-surface" id="dedication-surface" aria-label="Вернуться в начало страницы">
+        <span class="pill-dot" aria-hidden="true"></span>
+        <span class="dedication-text">
+          <span class="dedication-prefix">Мама, поздравляю тебя от</span>
+          <em class="dedication-brand">Max&amp;Jane</em>
+        </span>
+        <div class="page-scroll-progress" aria-hidden="true"></div>
+      </a>
     </header>
 
+    <!-- Minimal Chapter Dots on Right Edge -->
+    <nav class="scene-rail-dots" id="scene-rail-dots" aria-label="Сцены поздравления">
+      ${sceneDotsHtml}
+    </nav>
+
     <main id="top">
-      <!-- HERO: 3D Volumetric Floral Grove Video + Seamless Bright Flash into Cloud 3D Stage -->
+      <!-- SCENE 0: HERO 3D FLORAL GROVE + SEAMLESS SUNLIT FLASH -->
       <section class="hero-dissolve-track" id="hero-track" aria-label="Цветочная роща из роз и пионов для мамы">
         <div class="hero-sticky-viewport" id="hero-viewport">
           <div class="hero-media-layer">
@@ -167,309 +201,366 @@ function renderAppMarkup(): string {
         </div>
       </section>
 
-      <!-- INTERACTIVE CLOUD 3D FLOWER STAGE -->
-      <section class="cloud-stage-section" id="cloud-stage" aria-labelledby="cloud-stage-heading">
-        <div class="section-container">
-          <header class="section-header reveal-up">
-            <p class="section-eyebrow">Покрути 3D-цветок или нажми на него</p>
-            <h2 class="section-title" id="cloud-stage-heading">
-              Пион в облаках <em>и пожелания для тебя</em>
-            </h2>
-            <p class="section-lead">
-              Поворачивай бутон мышкой, пальцем или стрелками клавиатуры — с каждым поворотом вокруг расцветают новые тёплые слова для тебя, мамочка.
-            </p>
-          </header>
+      <!-- CINEMATIC STICKY-DECK STORY SCENES -->
+      <div class="story-deck" id="story-deck">
+        <!-- SCENE 1: INTERACTIVE CLOUD 3D FLOWER STAGE -->
+        <section
+          class="story-scene cloud-stage-section"
+          id="cloud-stage"
+          data-story-scene
+          data-scene-idx="1"
+          aria-labelledby="cloud-stage-heading"
+        >
+          <div class="story-scene-inner">
+            <div class="section-container">
+              <header class="section-header reveal-up">
+                <p class="section-eyebrow">Покрути 3D-цветок или нажми на него</p>
+                <h2 class="section-title" id="cloud-stage-heading">
+                  Пион в облаках <em>и пожелания для тебя</em>
+                </h2>
+                <p class="section-lead">
+                  Поворачивай бутон мышкой, пальцем или стрелками клавиатуры — с каждым поворотом вокруг расцветают новые тёплые слова для тебя, мамочка.
+                </p>
+              </header>
 
-          <div class="cloud-stage-grid">
-            <button
-              type="button"
-              class="glass-panel stage-wish-panel reveal-up"
-              id="left-wish-panel"
-              data-specular
-              aria-live="polite"
-              title="Нажмите, чтобы увидеть следующее пожелание"
-            >
-              <div class="wish-panel-header">
-                <span id="left-wish-tag">${firstPair.leftTag}</span>
-                <span class="wish-next-chip">Ещё ↻</span>
-              </div>
-              <h3 class="stage-panel-title" id="left-wish-title">${firstPair.leftTitle}</h3>
-              <p class="stage-panel-body" id="left-wish-body">${firstPair.leftBody}</p>
-              <span class="stage-panel-sign" id="left-wish-sign">${firstPair.leftSign}</span>
-            </button>
+              <div class="cloud-stage-grid">
+                <button
+                  type="button"
+                  class="glass-panel stage-wish-panel reveal-up"
+                  id="left-wish-panel"
+                  data-specular
+                  aria-live="polite"
+                  title="Нажмите, чтобы увидеть следующее пожелание"
+                >
+                  <div class="wish-panel-header">
+                    <span id="left-wish-tag">${firstPair.leftTag}</span>
+                    <span class="wish-next-chip">Ещё ↻</span>
+                  </div>
+                  <h3 class="stage-panel-title" id="left-wish-title">${firstPair.leftTitle}</h3>
+                  <p class="stage-panel-body" id="left-wish-body">${firstPair.leftBody}</p>
+                  <span class="stage-panel-sign" id="left-wish-sign">${firstPair.leftSign}</span>
+                </button>
 
-            <div
-              class="cloud-canvas-shell"
-              id="cloud-canvas-shell"
-              tabindex="0"
-              role="region"
-              aria-label="Интерактивный 3D-цветок пион-роза в облаках. Покрутите цветок перетаскиванием, стрелками клавиатуры или нажмите на него."
-            >
-              <div class="cloud-loader" id="cloud-loader">
-                <span class="cloud-loader-ring" aria-hidden="true"></span>
-                <span>Раскрываю бутон для тебя…</span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              class="glass-panel stage-wish-panel reveal-up"
-              id="right-wish-panel"
-              data-specular
-              aria-live="polite"
-              title="Нажмите, чтобы увидеть следующее пожелание"
-            >
-              <div class="wish-panel-header">
-                <span id="right-wish-tag">${firstPair.rightTag}</span>
-                <span class="wish-next-chip">Ещё ↻</span>
-              </div>
-              <h3 class="stage-panel-title" id="right-wish-title">${firstPair.rightTitle}</h3>
-              <p class="stage-panel-body" id="right-wish-body">${firstPair.rightBody}</p>
-              <span class="stage-panel-sign" id="right-wish-sign">${firstPair.rightSign}</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- KINETIC DUAL EDITORIAL MARQUEE RIBBONS -->
-      <section class="kinetic-marquee-section" aria-hidden="true">
-        <div class="marquee-row marquee-row--top">
-          ${renderMarqueeItems(MARQUEE_TOP, 'marquee-phrase-serif')}
-        </div>
-        <div class="marquee-row marquee-row--bottom">
-          ${renderMarqueeItems(MARQUEE_BOTTOM, 'marquee-phrase-sans')}
-        </div>
-      </section>
-
-      <!-- INTERACTIVE 3D WAX-SEAL ENVELOPE LETTER -->
-      <section class="envelope-section" id="wax-envelope" aria-labelledby="envelope-heading">
-        <div class="section-container">
-          <header class="section-header reveal-up">
-            <p class="section-eyebrow">${WAX_SEAL_LETTER.eyebrow}</p>
-            <h2 class="section-title" id="envelope-heading">
-              Письмо, которое <em>ждёт тебя внутри</em>
-            </h2>
-            <p class="section-lead">
-              Нажми на розовую сургучную печать, чтобы распечатать конверт и прочитать несколько тёплых строк от меня.
-            </p>
-          </header>
-
-          <div class="envelope-stage reveal-up">
-            <div class="wax-envelope-wrap">
-              <div class="envelope-shell" id="envelope-shell">
-                <div class="envelope-flap" aria-hidden="true"></div>
-                <div class="envelope-pocket" aria-hidden="true"></div>
+                <div
+                  class="cloud-canvas-shell"
+                  id="cloud-canvas-shell"
+                  tabindex="0"
+                  role="region"
+                  aria-label="Интерактивный 3D-цветок пион-роза в облаках. Покрутите цветок перетаскиванием, стрелками клавиатуры или нажмите на него."
+                >
+                  <div class="cloud-loader" id="cloud-loader">
+                    <span class="cloud-loader-ring" aria-hidden="true"></span>
+                    <span>Раскрываю бутон для тебя…</span>
+                  </div>
+                </div>
 
                 <button
                   type="button"
-                  class="wax-seal-btn"
-                  id="wax-seal-btn"
-                  aria-expanded="false"
-                  aria-controls="envelope-letter-sheet"
-                  aria-label="Открыть конверт с письмом для мамы"
+                  class="glass-panel stage-wish-panel reveal-up"
+                  id="right-wish-panel"
+                  data-specular
+                  aria-live="polite"
+                  title="Нажмите, чтобы увидеть следующее пожелание"
                 >
-                  <span class="wax-seal-heart" aria-hidden="true">♥</span>
-                  <span class="wax-seal-label">Открыть</span>
+                  <div class="wish-panel-header">
+                    <span id="right-wish-tag">${firstPair.rightTag}</span>
+                    <span class="wish-next-chip">Ещё ↻</span>
+                  </div>
+                  <h3 class="stage-panel-title" id="right-wish-title">${firstPair.rightTitle}</h3>
+                  <p class="stage-panel-body" id="right-wish-body">${firstPair.rightBody}</p>
+                  <span class="stage-panel-sign" id="right-wish-sign">${firstPair.rightSign}</span>
                 </button>
-
-                <div class="envelope-closed-caption">${WAX_SEAL_LETTER.envelopeCaption}</div>
-
-                <article class="envelope-letter-sheet" id="envelope-letter-sheet">
-                  <p class="letter-salutation">${WAX_SEAL_LETTER.salutation}</p>
-                  <div class="letter-body">
-                    ${WAX_SEAL_LETTER.paragraphs.map((p) => `<p>${p}</p>`).join('')}
-                  </div>
-                  <div class="letter-footer-row">
-                    <span class="letter-closing">${WAX_SEAL_LETTER.closing}</span>
-                    <button type="button" class="btn-secondary-soft" id="envelope-close-btn">Сложить конверт</button>
-                  </div>
-                </article>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- HORIZONTAL SCROLL 1: 10 FLIPPABLE GREETING CARDS FOR MOM -->
-      <section class="greetings-section" id="greetings" aria-labelledby="greetings-heading">
-        <div class="section-container">
-          <div class="rail-topbar reveal-up">
-            <header class="section-header">
-              <p class="section-eyebrow">Горизонтальная лента открыток · Нажимай и переворачивай</p>
-              <h2 class="section-title" id="greetings-heading">
-                Десять тёплых открыток <em>для тебя, мама</em>
-              </h2>
-              <p class="section-lead">
-                Листай открытки вбок и нажимай на каждую, чтобы перевернуть её в 3D и прочитать спрятанное секретное P.S.
-              </p>
-            </header>
-
-            <div class="rail-controls">
-              <span class="rail-counter-pill" id="flipped-counter">
-                Открыто секретов: <strong>0</strong> / ${GREETING_CARDS.length}
-              </span>
-              <button type="button" class="rail-arrow-btn" data-rail-prev="greetings-rail" aria-label="Прокрутить открытки влево">←</button>
-              <button type="button" class="rail-arrow-btn" data-rail-next="greetings-rail" aria-label="Прокрутить открытки вправо">→</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="h-scroll-rail" id="greetings-rail" data-drag-rail>
-          ${greetingCardsHtml}
-        </div>
-
-        <div class="rail-progress-wrap">
-          <div class="rail-progress-track">
-            <div class="rail-progress-bar" data-rail-progress="greetings-rail"></div>
-          </div>
-          <span class="rail-swipe-hint">Тяни вбок или листай стрелками</span>
-        </div>
-      </section>
-
-      <!-- INTERACTIVE 8-PETAL BLOOM ORACLE («СОРВИ ЛЕПЕСТОК ПОЖЕЛАНИЙ») -->
-      <section class="oracle-section" id="petal-oracle" aria-labelledby="oracle-heading">
-        <div class="section-container">
-          <header class="section-header reveal-up">
-            <p class="section-eyebrow">Интерактивный цветок желаний</p>
-            <h2 class="section-title" id="oracle-heading">
-              Сорви лепесток <em>на удачу и радость</em>
-            </h2>
-            <p class="section-lead">
-              Нажми на любой лепесток цветка — он взлетит вверх и откроет тёплое пожелание для тебя на этот год.
-            </p>
-          </header>
-
-          <div class="oracle-layout">
-            <div class="bloom-wheel-stage reveal-up" id="bloom-wheel">
-              <div class="bloom-halo" aria-hidden="true"></div>
-              ${oraclePetalsHtml}
-              <button
-                type="button"
-                class="bloom-center-core"
-                id="oracle-reset-core"
-                title="Распустить все лепестки заново"
-              >
-                <span>Заново</span>
-                <span aria-hidden="true">✿</span>
-              </button>
-            </div>
-
-            <div class="glass-panel oracle-card reveal-up" id="oracle-card" data-specular aria-live="polite">
-              <div class="wish-panel-header">
-                <span id="oracle-counter-label">Сорвано лепестков: 0 / ${BLOOM_ORACLE_PETALS.length}</span>
-                <button type="button" class="wish-next-chip" id="oracle-reset-btn">Распустить заново ✿</button>
+        <!-- SCENE 2: KINETIC RIBBONS + INTERACTIVE 3D WAX-SEAL ENVELOPE -->
+        <section
+          class="story-scene envelope-scene"
+          id="wax-envelope"
+          data-story-scene
+          data-scene-idx="2"
+          aria-labelledby="envelope-heading"
+        >
+          <div class="story-scene-inner">
+            <div class="kinetic-marquee-band" aria-hidden="true">
+              <div class="marquee-row marquee-row--top">
+                ${renderMarqueeItems(MARQUEE_TOP, 'marquee-phrase-serif')}
               </div>
-              <h3 class="stage-panel-title" id="oracle-wish-title">Выбери любой лепесток на цветке</h3>
-              <p class="stage-panel-body" id="oracle-wish-body">
-                Под каждым из восьми шёлковых лепестков спрятано отдельное пожелание для тебя, мамочка. Сорви первый лепесток и посмотри, что он принесёт!
-              </p>
-              <div class="oracle-history-chips" id="oracle-history-chips"></div>
+              <div class="marquee-row marquee-row--bottom">
+                ${renderMarqueeItems(MARQUEE_BOTTOM, 'marquee-phrase-sans')}
+              </div>
+            </div>
+
+            <div class="section-container">
+              <header class="section-header reveal-up">
+                <p class="section-eyebrow">${WAX_SEAL_LETTER.eyebrow}</p>
+                <h2 class="section-title" id="envelope-heading">
+                  Письмо, которое <em>ждёт тебя внутри</em>
+                </h2>
+                <p class="section-lead">
+                  Нажми на розовую сургучную печать, чтобы распечатать конверт и прочитать несколько тёплых строк от меня.
+                </p>
+              </header>
+
+              <div class="envelope-stage reveal-up">
+                <div class="wax-envelope-wrap">
+                  <div class="envelope-shell" id="envelope-shell">
+                    <div class="envelope-flap" aria-hidden="true"></div>
+                    <div class="envelope-pocket" aria-hidden="true"></div>
+
+                    <button
+                      type="button"
+                      class="wax-seal-btn"
+                      id="wax-seal-btn"
+                      aria-expanded="false"
+                      aria-controls="envelope-letter-sheet"
+                      aria-label="Открыть конверт с письмом для мамы"
+                    >
+                      <span class="wax-seal-heart" aria-hidden="true">♥</span>
+                      <span class="wax-seal-label">Открыть</span>
+                    </button>
+
+                    <div class="envelope-closed-caption">${WAX_SEAL_LETTER.envelopeCaption}</div>
+
+                    <article class="envelope-letter-sheet" id="envelope-letter-sheet">
+                      <p class="letter-salutation">${WAX_SEAL_LETTER.salutation}</p>
+                      <div class="letter-body">
+                        ${WAX_SEAL_LETTER.paragraphs.map((p) => `<p>${p}</p>`).join('')}
+                      </div>
+                      <div class="letter-footer-row">
+                        <span class="letter-closing">${WAX_SEAL_LETTER.closing}</span>
+                        <button type="button" class="btn-secondary-soft" id="envelope-close-btn">Сложить конверт</button>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- HORIZONTAL SCROLL 2: INTERACTIVE COLLECTIBLE GLASS WISH PANELS -->
-      <section class="glass-band-section" id="glass-wishes" aria-labelledby="glass-wishes-heading">
-        <div class="section-container">
-          <div class="rail-topbar reveal-up">
-            <header class="section-header">
-              <p class="section-eyebrow">Стеклянные панели пожеланий · Интерактив</p>
-              <h2 class="section-title" id="glass-wishes-heading">
-                Собери свой <em>букет пожеланий</em>
-              </h2>
-              <p class="section-lead">
-                Нажимай на стеклянные карточки, чтобы зажечь каждое пожелание и добавить его в праздничный букет.
-              </p>
-            </header>
+        <!-- SCENE 3: HORIZONTAL 10 FLIPPABLE GREETING CARDS -->
+        <section
+          class="story-scene greetings-section"
+          id="greetings"
+          data-story-scene
+          data-scene-idx="3"
+          aria-labelledby="greetings-heading"
+        >
+          <div class="story-scene-inner">
+            <div class="section-container">
+              <div class="rail-topbar reveal-up">
+                <header class="section-header">
+                  <p class="section-eyebrow">Горизонтальная лента открыток · Нажимай и переворачивай</p>
+                  <h2 class="section-title" id="greetings-heading">
+                    Десять тёплых открыток <em>для тебя, мама</em>
+                  </h2>
+                  <p class="section-lead">
+                    Листай открытки вбок и нажимай на каждую, чтобы перевернуть её в 3D и прочитать спрятанное секретное P.S.
+                  </p>
+                </header>
 
-            <div class="rail-controls">
-              <span class="rail-counter-pill" id="bouquet-counter">
-                В букете: <strong>0</strong> / ${GLASS_WISH_PANELS.length}
-              </span>
-              <button type="button" class="rail-arrow-btn" data-rail-prev="glass-rail" aria-label="Прокрутить пожелания влево">←</button>
-              <button type="button" class="rail-arrow-btn" data-rail-next="glass-rail" aria-label="Прокрутить пожелания вправо">→</button>
+                <div class="rail-controls">
+                  <span class="rail-counter-pill" id="flipped-counter">
+                    Открыто секретов: <strong>0</strong> / ${GREETING_CARDS.length}
+                  </span>
+                  <button type="button" class="rail-arrow-btn" data-rail-prev="greetings-rail" aria-label="Прокрутить открытки влево">←</button>
+                  <button type="button" class="rail-arrow-btn" data-rail-next="greetings-rail" aria-label="Прокрутить открытки вправо">→</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="h-scroll-rail" id="greetings-rail" data-drag-rail>
+              ${greetingCardsHtml}
+            </div>
+
+            <div class="rail-progress-wrap">
+              <div class="rail-progress-track">
+                <div class="rail-progress-bar" data-rail-progress="greetings-rail"></div>
+              </div>
+              <span class="rail-swipe-hint">Тяни вбок или листай стрелками</span>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="h-scroll-rail" id="glass-rail" data-drag-rail>
-          ${glassWishesHtml}
-        </div>
+        <!-- SCENE 4: INTERACTIVE 8-PETAL BLOOM ORACLE -->
+        <section
+          class="story-scene oracle-section"
+          id="petal-oracle"
+          data-story-scene
+          data-scene-idx="4"
+          aria-labelledby="oracle-heading"
+        >
+          <div class="story-scene-inner">
+            <div class="section-container">
+              <header class="section-header reveal-up">
+                <p class="section-eyebrow">Интерактивный цветок желаний</p>
+                <h2 class="section-title" id="oracle-heading">
+                  Сорви лепесток <em>на удачу и радость</em>
+                </h2>
+                <p class="section-lead">
+                  Нажми на любой лепесток цветка — он взлетит вверх и откроет тёплое пожелание для тебя на этот год.
+                </p>
+              </header>
 
-        <div class="rail-progress-wrap">
-          <div class="rail-progress-track">
-            <div class="rail-progress-bar" data-rail-progress="glass-rail"></div>
-          </div>
-          <span class="rail-swipe-hint">Листай вбок и зажигай карточки</span>
-        </div>
-      </section>
+              <div class="oracle-layout">
+                <div class="bloom-wheel-stage reveal-up" id="bloom-wheel">
+                  <div class="bloom-halo" aria-hidden="true"></div>
+                  ${oraclePetalsHtml}
+                  <button
+                    type="button"
+                    class="bloom-center-core"
+                    id="oracle-reset-core"
+                    title="Распустить все лепестки заново"
+                  >
+                    <span>Заново</span>
+                    <span aria-hidden="true">✿</span>
+                  </button>
+                </div>
 
-      <!-- HORIZONTAL SCROLL 3: 6-PLATE EDITORIAL GALLERY LOOKBOOK -->
-      <section class="gallery-section" id="gallery" aria-labelledby="gallery-heading">
-        <div class="section-container">
-          <div class="rail-topbar reveal-up">
-            <header class="section-header">
-              <p class="section-eyebrow">Редакционная галерея · 6 кадров рощи</p>
-              <h2 class="section-title" id="gallery-heading">
-                Мгновения <em>твоей цветочной рощи</em>
-              </h2>
-              <p class="section-lead">
-                Пролистай все шесть кадров вправо и нажми на любую фотографию, чтобы открыть её крупно с личной запиской для тебя.
-              </p>
-            </header>
-
-            <div class="rail-controls">
-              <button type="button" class="rail-arrow-btn" data-rail-prev="gallery-rail" aria-label="Прокрутить галерею влево">←</button>
-              <button type="button" class="rail-arrow-btn" data-rail-next="gallery-rail" aria-label="Прокрутить галерею вправо">→</button>
+                <div class="glass-panel oracle-card reveal-up" id="oracle-card" data-specular aria-live="polite">
+                  <div class="wish-panel-header">
+                    <span id="oracle-counter-label">Сорвано лепестков: 0 / ${BLOOM_ORACLE_PETALS.length}</span>
+                    <button type="button" class="wish-next-chip" id="oracle-reset-btn">Распустить заново ✿</button>
+                  </div>
+                  <h3 class="stage-panel-title" id="oracle-wish-title">Выбери любой лепесток на цветке</h3>
+                  <p class="stage-panel-body" id="oracle-wish-body">
+                    Под каждым из восьми шёлковых лепестков спрятано отдельное пожелание для тебя, мамочка. Сорви первый лепесток и посмотри, что он принесёт!
+                  </p>
+                  <div class="oracle-history-chips" id="oracle-history-chips"></div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="h-scroll-rail gallery-rail" id="gallery-rail" data-drag-rail>
-          ${galleryHtml}
-        </div>
+        <!-- SCENE 5: HORIZONTAL COLLECTIBLE GLASS WISH PANELS -->
+        <section
+          class="story-scene glass-band-section"
+          id="glass-wishes"
+          data-story-scene
+          data-scene-idx="5"
+          aria-labelledby="glass-wishes-heading"
+        >
+          <div class="story-scene-inner">
+            <div class="section-container">
+              <div class="rail-topbar reveal-up">
+                <header class="section-header">
+                  <p class="section-eyebrow">Стеклянные панели пожеланий · Интерактив</p>
+                  <h2 class="section-title" id="glass-wishes-heading">
+                    Собери свой <em>букет пожеланий</em>
+                  </h2>
+                  <p class="section-lead">
+                    Нажимай на стеклянные карточки, чтобы зажечь каждое пожелание и добавить его в праздничный букет.
+                  </p>
+                </header>
 
-        <div class="rail-progress-wrap">
-          <div class="rail-progress-track">
-            <div class="rail-progress-bar" data-rail-progress="gallery-rail"></div>
+                <div class="rail-controls">
+                  <span class="rail-counter-pill" id="bouquet-counter">
+                    В букете: <strong>0</strong> / ${GLASS_WISH_PANELS.length}
+                  </span>
+                  <button type="button" class="rail-arrow-btn" data-rail-prev="glass-rail" aria-label="Прокрутить пожелания влево">←</button>
+                  <button type="button" class="rail-arrow-btn" data-rail-next="glass-rail" aria-label="Прокрутить пожелания вправо">→</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="h-scroll-rail" id="glass-rail" data-drag-rail>
+              ${glassWishesHtml}
+            </div>
+
+            <div class="rail-progress-wrap">
+              <div class="rail-progress-track">
+                <div class="rail-progress-bar" data-rail-progress="glass-rail"></div>
+              </div>
+              <span class="rail-swipe-hint">Листай вбок и зажигай карточки</span>
+            </div>
           </div>
-          <span class="rail-swipe-hint">Нажми на кадр, чтобы открыть письмо</span>
-        </div>
-      </section>
+        </section>
+
+        <!-- SCENE 6: HORIZONTAL 6-PLATE EDITORIAL GALLERY -->
+        <section
+          class="story-scene gallery-section"
+          id="gallery"
+          data-story-scene
+          data-scene-idx="6"
+          aria-labelledby="gallery-heading"
+        >
+          <div class="story-scene-inner">
+            <div class="section-container">
+              <div class="rail-topbar reveal-up">
+                <header class="section-header">
+                  <p class="section-eyebrow">Редакционная галерея · 6 кадров рощи</p>
+                  <h2 class="section-title" id="gallery-heading">
+                    Мгновения <em>твоей цветочной рощи</em>
+                  </h2>
+                  <p class="section-lead">
+                    Пролистай все шесть кадров вправо и нажми на любую фотографию, чтобы открыть её крупно с личной запиской для тебя.
+                  </p>
+                </header>
+
+                <div class="rail-controls">
+                  <button type="button" class="rail-arrow-btn" data-rail-prev="gallery-rail" aria-label="Прокрутить галерею влево">←</button>
+                  <button type="button" class="rail-arrow-btn" data-rail-next="gallery-rail" aria-label="Прокрутить галерею вправо">→</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="h-scroll-rail gallery-rail" id="gallery-rail" data-drag-rail>
+              ${galleryHtml}
+            </div>
+
+            <div class="rail-progress-wrap">
+              <div class="rail-progress-track">
+                <div class="rail-progress-bar" data-rail-progress="gallery-rail"></div>
+              </div>
+              <span class="rail-swipe-hint">Нажми на кадр, чтобы открыть письмо</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCENE 7: HORSESHOE FLORAL ARCH FOOTER & CTA -->
+        <footer
+          class="story-scene horseshoe-footer"
+          id="celebrate"
+          data-story-scene
+          data-scene-idx="7"
+        >
+          <div class="story-scene-inner">
+            <div class="horseshoe-stage">
+              <div class="horseshoe-arch-backdrop" aria-hidden="true">
+                <img
+                  src="./images/horseshoe-floral-arch.jpg"
+                  alt=""
+                  class="horseshoe-arch-img"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="horseshoe-center-halo"></div>
+              </div>
+
+              <div class="horseshoe-content reveal-up">
+                <p class="horseshoe-eyebrow">Под сводом роз и пионов · Для тебя, мама</p>
+                <h2 class="horseshoe-title">Открой главное поздравление</h2>
+                <p class="horseshoe-lead">
+                  Нажми на кнопку, чтобы запустить праздничный дождь из лепестков и открыть моё личное поздравление для тебя.
+                </p>
+                <button type="button" class="celebrate-cta-btn" id="celebrate-btn">
+                  <span>Поздравление с Днём Матери</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="footer-colophon">
+              <span class="footer-colophon-serif">Мама, поздравляю тебя от Max&amp;Jane</span>
+              <span>С любовью и нежностью · С Днём Матери</span>
+            </div>
+          </div>
+        </footer>
+      </div>
     </main>
-
-    <!-- HORSESHOE FLORAL ARCH FOOTER & CTA -->
-    <footer class="horseshoe-footer" id="celebrate">
-      <div class="horseshoe-stage">
-        <div class="horseshoe-arch-backdrop" aria-hidden="true">
-          <img
-            src="./images/horseshoe-floral-arch.jpg"
-            alt=""
-            class="horseshoe-arch-img"
-            loading="lazy"
-            decoding="async"
-          />
-          <div class="horseshoe-center-halo"></div>
-        </div>
-
-        <div class="horseshoe-content reveal-up">
-          <p class="horseshoe-eyebrow">Под сводом роз и пионов · Для тебя, мама</p>
-          <h2 class="horseshoe-title">Открой главное поздравление</h2>
-          <p class="horseshoe-lead">
-            Нажми на кнопку, чтобы запустить праздничный дождь из лепестков и открыть моё личное поздравление для тебя.
-          </p>
-          <button type="button" class="celebrate-cta-btn" id="celebrate-btn">
-            <span>Поздравление с Днём Матери</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="footer-colophon">
-        <span class="footer-colophon-serif">Мама, поздравляю тебя от Max&amp;Jane</span>
-        <span>С любовью и нежностью · С Днём Матери</span>
-      </div>
-    </footer>
 
     <!-- Anytime Floating Petal Shower Button -->
     <button
@@ -634,6 +725,9 @@ function initApp(): void {
   const heroViewport = document.getElementById('hero-viewport') as HTMLElement;
   const heroTrack = document.getElementById('hero-track') as HTMLElement;
   const dedicationBar = document.getElementById('dedication-bar') as HTMLElement;
+  const sceneDotsNav = document.getElementById('scene-rail-dots') as HTMLElement;
+  const sceneDotBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-scene-target]'));
+  const storyScenes = Array.from(document.querySelectorAll<HTMLElement>('[data-story-scene]'));
   const cloudShell = document.getElementById('cloud-canvas-shell') as HTMLElement;
   const cloudLoader = document.getElementById('cloud-loader') as HTMLElement;
 
@@ -641,6 +735,41 @@ function initApp(): void {
   const celebrationPetals = new PetalCelebrationOverlay();
 
   wireSpecularGlassGlow();
+
+  // Compute safe sticky top offsets for scenes taller than 100vh so content is NEVER cut off on short viewports
+  const updateStickyOffsets = (): void => {
+    const vh = window.innerHeight || 800;
+    for (const scene of storyScenes) {
+      if (scene.dataset.sceneIdx === '7') continue;
+      const overflow = scene.offsetHeight - vh;
+      const topVal = overflow > 0 ? -overflow : 0;
+      scene.style.setProperty('--scene-sticky-top', `${Math.round(topVal)}px`);
+    }
+  };
+  const stickyResizeObserver = new ResizeObserver(updateStickyOffsets);
+  storyScenes.forEach((s) => stickyResizeObserver.observe(s));
+  updateStickyOffsets();
+
+  // Chapter dot navigation (scroll smoothly to natural offset of each scene)
+  sceneDotBtns.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      const targetId = dot.dataset.sceneTarget;
+      if (!targetId) return;
+      if (targetId === 'hero-track') {
+        window.scrollTo({ top: 0, behavior: isReducedMotion() ? 'auto' : 'smooth' });
+        return;
+      }
+      const target = document.getElementById(targetId);
+      if (target) {
+        // Compute static flow top even when sticky
+        const prevPos = target.style.position;
+        target.style.position = 'static';
+        const topY = target.getBoundingClientRect().top + window.scrollY;
+        target.style.position = prevPos;
+        window.scrollTo({ top: topY, behavior: isReducedMotion() ? 'auto' : 'smooth' });
+      }
+    });
+  });
 
   // Dual personal wish panels flanking the 3D Peony-Rose
   const leftPanelEl = document.getElementById('left-wish-panel')!;
@@ -701,16 +830,25 @@ function initApp(): void {
   leftPanelEl.addEventListener('click', advanceFlowerWish);
   rightPanelEl.addEventListener('click', advanceFlowerWish);
 
-  // Scroll-Scrubbed Sunlit Flash + Global Page Scroll Progress Ribbon
+  // Unified Scroll Orchestrator:
+  // 1) Header morph into compact floating glass pill "Max&Jane"
+  // 2) Hero -> Sunlit Bright Flash -> Cloud 3D Stage
+  // 3) Cinematic Sticky-Deck Scene-by-Scene transitions (--scene-enter & --scene-exit)
+  // 4) Active chapter dot sync
   let scrollRafPending = false;
   const updateScrollEffects = (): void => {
     scrollRafPending = false;
     const scrollY = window.scrollY;
-    const docMax = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+    const vh = Math.max(window.innerHeight, 1);
+    const docMax = Math.max(document.documentElement.scrollHeight - vh, 1);
     const pageProgress = Math.min(Math.max(scrollY / docMax, 0), 1);
 
     document.documentElement.style.setProperty('--scroll-page', pageProgress.toFixed(4));
-    dedicationBar.classList.toggle('is-scrolled', scrollY > 24);
+
+    // Morph top dedication strip into compact floating glass pill "Max&Jane"
+    const shouldBePill = scrollY > 42;
+    dedicationBar.classList.toggle('is-pill', shouldBePill);
+    sceneDotsNav.classList.toggle('is-visible', scrollY > vh * 0.25);
 
     if (isReducedMotion()) {
       document.documentElement.style.setProperty('--dissolve-progress', '0');
@@ -718,12 +856,17 @@ function initApp(): void {
       document.documentElement.style.setProperty('--hero-zoom', '1');
       document.documentElement.style.setProperty('--hero-fade', '1');
       document.documentElement.style.setProperty('--cloud-fade', '1');
+      storyScenes.forEach((s) => {
+        s.style.setProperty('--scene-enter', '1');
+        s.style.setProperty('--scene-exit', '0');
+      });
       cloudStage.setScrollReveal(1);
       return;
     }
 
+    // Hero -> Sunlit Flash -> Cloud 3D Stage
     const trackRect = heroTrack.getBoundingClientRect();
-    const scrollableDistance = Math.max(heroTrack.offsetHeight - window.innerHeight, 1);
+    const scrollableDistance = Math.max(heroTrack.offsetHeight - vh, 1);
     const p = Math.min(Math.max(-trackRect.top / scrollableDistance, 0), 1);
 
     const heroFade = Math.max(0, 1 - p * 2.15);
@@ -738,6 +881,38 @@ function initApp(): void {
     document.documentElement.style.setProperty('--hero-fade', heroFade.toFixed(4));
     document.documentElement.style.setProperty('--cloud-fade', Math.max(cloudFade, 0.08).toFixed(4));
     cloudStage.setScrollReveal(cloudFade);
+
+    // Sticky-Deck Curtain Transitions across every chapter
+    let activeChapterIdx = scrollY < vh * 0.35 ? 0 : 1;
+
+    for (let i = 0; i < storyScenes.length; i++) {
+      const current = storyScenes[i];
+      const next = storyScenes[i + 1];
+      const rect = current.getBoundingClientRect();
+
+      // Entrance curve as this scene rises from bottom of viewport to top
+      const enterRaw = 1 - Math.min(Math.max(rect.top / vh, 0), 1);
+      const enterEased = enterRaw * enterRaw * (3 - 2 * enterRaw);
+      current.style.setProperty('--scene-enter', enterEased.toFixed(4));
+
+      if (rect.top <= vh * 0.42) {
+        activeChapterIdx = i + 1;
+      }
+
+      // Exit depth recession as the NEXT scene glides up over this sticky scene
+      if (next) {
+        const nextRect = next.getBoundingClientRect();
+        const coverRaw = 1 - Math.min(Math.max(nextRect.top / vh, 0), 1);
+        const coverEased = coverRaw * coverRaw * (3 - 2 * coverRaw);
+        current.style.setProperty('--scene-exit', coverEased.toFixed(4));
+      } else {
+        current.style.setProperty('--scene-exit', '0');
+      }
+    }
+
+    sceneDotBtns.forEach((dot, idx) => {
+      dot.classList.toggle('is-active', idx === activeChapterIdx);
+    });
   };
 
   const requestScrollUpdate = (): void => {
@@ -748,7 +923,10 @@ function initApp(): void {
   };
 
   window.addEventListener('scroll', requestScrollUpdate, { passive: true });
-  window.addEventListener('resize', requestScrollUpdate, { passive: true });
+  window.addEventListener('resize', () => {
+    updateStickyOffsets();
+    requestScrollUpdate();
+  }, { passive: true });
   updateScrollEffects();
 
   // Interactive 3D Wax-Seal Envelope Letter
@@ -759,6 +937,7 @@ function initApp(): void {
   const setEnvelopeOpen = (open: boolean, clientX?: number, clientY?: number): void => {
     envelopeShell.classList.toggle('is-open', open);
     waxSealBtn.setAttribute('aria-expanded', String(open));
+    window.setTimeout(updateStickyOffsets, 450);
     if (open) {
       const rect = waxSealBtn.getBoundingClientRect();
       celebrationPetals.launchMiniBurst(
@@ -772,7 +951,7 @@ function initApp(): void {
   waxSealBtn.addEventListener('click', (e) => setEnvelopeOpen(true, e.clientX, e.clientY));
   envelopeCloseBtn.addEventListener('click', () => setEnvelopeOpen(false));
 
-  // Interactive 8-Petal Bloom Oracle («Сорви лепесток пожеланий»)
+  // Interactive 8-Petal Bloom Oracle
   const pluckedPetals = new Set<number>();
   const oracleCardEl = document.getElementById('oracle-card')!;
   const oracleCounterEl = document.getElementById('oracle-counter-label')!;
@@ -914,7 +1093,7 @@ function initApp(): void {
         }
       });
     },
-    { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+    { threshold: 0.08, rootMargin: '0px 0px -20px 0px' }
   );
   document.querySelectorAll<HTMLElement>('.reveal-up').forEach((el) => revealObserver.observe(el));
 
