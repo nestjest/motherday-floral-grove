@@ -1,0 +1,26 @@
+{
+  "name": "mothers-day-floral-grove",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "generate:glb": "node scripts/generate-flower-glb.mjs"
+  },
+  "dependencies": {
+    "three": "^0.174.0"
+  },
+  "devDependencies": {
+    "@fontsource/cormorant-garamond": "^5.2.5",
+    "@fontsource/manrope": "^5.2.5",
+    "@gltf-transform/core": "^4.1.0",
+    "@gltf-transform/extensions": "^4.1.0",
+    "@gltf-transform/functions": "^4.1.0",
+    "@types/three": "^0.174.0",
+    "draco3dgltf": "^1.5.7",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2"
+  }
+}
